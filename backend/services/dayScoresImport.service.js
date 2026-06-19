@@ -153,9 +153,8 @@ async function importScoresForDay(day) {
     throw new Error("Giornata non valida");
   }
 
-  const sheetName = process.env.GOOGLE_REF_REPORT_SHEET_NAME || "REF_REPORT";
-  const range = process.env.GOOGLE_REF_REPORT_RANGE || `${sheetName}!E:O`;
-
+const sheetName = process.env.GOOGLE_REPORT_DB_SHEET_NAME || "REPORT_DB";
+const range = process.env.GOOGLE_REPORT_DB_RANGE || `${sheetName}!A:K`;
   const values = await readSheetValues(range);
 
   if (!values.length) {
@@ -164,7 +163,7 @@ async function importScoresForDay(day) {
       eventsImported: 0,
       playersScored: 0,
       teamsCalculated: 0,
-      errors: ["REF_REPORT vuoto"],
+      errors: ["REPORT_DB vuoto"],
     };
   }
 
@@ -186,7 +185,7 @@ async function importScoresForDay(day) {
       playersScored: 0,
       teamsCalculated: 0,
       errors: [
-        "Header REF_REPORT non trovati. Servono almeno GIORNATA, PLAYER_ID, EVENTO, TOTALE.",
+        "Header REPORT_DB non trovati. Servono almeno GIORNATA, PLAYER_ID, EVENTO, TOTALE.",
       ],
     };
   }

@@ -8,19 +8,18 @@ function getNextImportAt(fromDate = new Date()) {
 }
 
 function normalizeImportResult(result, day) {
-  const stats = result?.stats || {};
-
   return {
     day,
-    eventsImported: Number(stats.eventsImported || 0),
-    playersScored: Number(stats.playersScored || 0),
-    teamsCalculated: Number(stats.teamsCalculated || 0),
-    dayWinner: stats.dayWinner || null,
+    eventsImported: Number(result?.eventsImported || 0),
+    playersScored: Number(result?.playersScored || 0),
+    teamsCalculated: Number(result?.teamsCalculated || 0),
+    dayWinner: result?.dayWinner || null,
     dayWinnerScore:
-      stats.dayWinnerScore !== undefined && stats.dayWinnerScore !== null
-        ? Number(stats.dayWinnerScore)
+      result?.dayWinnerScore !== undefined &&
+      result?.dayWinnerScore !== null
+        ? Number(result.dayWinnerScore)
         : null,
-    errors: Array.isArray(stats.errors) ? stats.errors : [],
+    errors: Array.isArray(result?.errors) ? result.errors : [],
     message: result?.message || "",
   };
 }
@@ -69,6 +68,7 @@ async function runImportForDay(day, source = "manual", forcedStatus = null) {
   }
 
   const result = await importScoresForDay(parsedDay);
+  console.log("IMPORT RESULT", result);
   const normalized = normalizeImportResult(result, parsedDay);
 
   const nextStatus = forcedStatus || currentStatus.status || "not_started";

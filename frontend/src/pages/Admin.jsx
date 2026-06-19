@@ -649,6 +649,8 @@ function DayStatusPanel({ status, selectedDay }) {
     );
   }
 
+  console.log("DAY STATUS", status);
+
   const isLive = status.status === "live" || status.isLive;
   const isClosed = status.status === "closed" || status.isClosed;
 
