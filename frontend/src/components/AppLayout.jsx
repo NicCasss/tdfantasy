@@ -152,10 +152,10 @@ function MenuLink({ to, children }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `rounded-2xl px-4 py-2 text-sm font-black transition-all ${
-          isActive
-            ? "bg-white !text-[#F26A00] shadow-[0_10px_26px_-18px_rgba(43,33,27,0.7)]"
-            : "!text-white hover:bg-white/15 hover:!text-white"
+        `rounded-2xl px-4 py-2 text-sm font-black transition-all
+        ${isActive
+          ? "bg-white !text-[#F26A00] shadow-[0_10px_26px_-18px_rgba(43,33,27,0.7)]"
+          : "!text-white hover:bg-white/15 hover:!text-white"
         }`
       }
     >
