@@ -27,6 +27,7 @@ function AppLayout({ children }) {
       <header className="sticky top-0 z-30 bg-[#F26A00] shadow-[0_18px_40px_-28px_rgba(242,106,0,0.85)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex min-h-[72px] items-center justify-between gap-4">
+
             {/* LOGO */}
             <Link
               to="/dashboard"
@@ -65,8 +66,8 @@ function AppLayout({ children }) {
                   className={({ isActive }) =>
                     `rounded-2xl px-4 py-2 text-sm font-black transition-all active:translate-y-[1px] ${
                       isActive
-                        ? "bg-white !text-[#F26A00]"
-                        : "border border-white/40 bg-transparent !text-white hover:bg-white hover:!text-[#F26A00]"
+                        ? "bg-white text-[#F26A00]"
+                        : "border border-white/40 text-white hover:bg-white hover:text-[#F26A00]"
                     }`
                   }
                 >
@@ -84,20 +85,13 @@ function AppLayout({ children }) {
 
               <button
                 onClick={handleLogout}
-                className="hidden md:block rounded-2xl border border-white/40 px-4 py-2 text-sm font-black !text-white transition-all hover:bg-white hover:!text-[#F26A00] active:translate-y-[1px]"
+                className="hidden md:block rounded-2xl border border-white/40 px-4 py-2 text-sm font-black text-white transition-all hover:bg-white hover:text-[#F26A00]"
               >
                 Logout
               </button>
             </div>
           </div>
         </div>
-
-        {/* DESKTOP SECOND NAV (OPTIONAL MOBILE HIDDEN) */}
-        <nav className="hidden md:flex gap-2 overflow-x-auto border-t border-white/15 py-3">
-          <MobileMenuLink to="/dashboard">Dashboard</MobileMenuLink>
-          <MobileMenuLink to="/my-roster">Gestisci rosa</MobileMenuLink>
-          <MobileMenuLink to="/classifica">Classifica</MobileMenuLink>
-        </nav>
       </header>
 
       {/* MOBILE DRAWER */}
@@ -121,20 +115,32 @@ function AppLayout({ children }) {
               </button>
             </div>
 
-            <MobileDrawerLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+            <MobileDrawerLink
+              to="/dashboard"
+              onClick={() => setMobileOpen(false)}
+            >
               Dashboard
             </MobileDrawerLink>
 
-            <MobileDrawerLink to="/my-roster" onClick={() => setMobileOpen(false)}>
+            <MobileDrawerLink
+              to="/my-roster"
+              onClick={() => setMobileOpen(false)}
+            >
               Gestisci rosa
             </MobileDrawerLink>
 
-            <MobileDrawerLink to="/classifica" onClick={() => setMobileOpen(false)}>
+            <MobileDrawerLink
+              to="/classifica"
+              onClick={() => setMobileOpen(false)}
+            >
               Classifica
             </MobileDrawerLink>
 
             {user?.role === ADMIN_ROLE && (
-              <MobileDrawerLink to="/admin" onClick={() => setMobileOpen(false)}>
+              <MobileDrawerLink
+                to="/admin"
+                onClick={() => setMobileOpen(false)}
+              >
                 Admin
               </MobileDrawerLink>
             )}
@@ -160,7 +166,7 @@ function AppLayout({ children }) {
   );
 }
 
-/* DESKTOP NAV LINK */
+/* DESKTOP LINK */
 function MenuLink({ to, children }) {
   return (
     <NavLink
@@ -168,26 +174,8 @@ function MenuLink({ to, children }) {
       className={({ isActive }) =>
         `rounded-2xl px-4 py-2 text-sm font-black transition-all ${
           isActive
-            ? "bg-white !text-[#F26A00] shadow-[0_10px_26px_-18px_rgba(43,33,27,0.7)]"
-            : "!text-white hover:bg-white/15 hover:!text-white"
-        }`
-      }
-    >
-      {children}
-    </NavLink>
-  );
-}
-
-/* MOBILE INLINE (se ti serve ancora) */
-function MobileMenuLink({ to, children }) {
-  return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        `shrink-0 rounded-2xl px-4 py-2 text-sm font-black transition-all ${
-          isActive
-            ? "bg-white !text-[#F26A00]"
-            : "bg-white/10 !text-white hover:bg-white/15 hover:!text-white"
+            ? "bg-white text-[#F26A00] shadow-[0_10px_26px_-18px_rgba(43,33,27,0.7)]"
+            : "text-black hover:bg-white/40 hover:text-black"
         }`
       }
     >
@@ -206,7 +194,7 @@ function MobileDrawerLink({ to, children, onClick }) {
         `rounded-xl px-4 py-3 font-black transition ${
           isActive
             ? "bg-[#F26A00] text-white"
-            : "bg-[#FFF7F0] text-[#2B211B] hover:bg-[#F26A00]/10"
+            : "bg-[#FFF7F0] text-black hover:bg-[#F26A00]/10"
         }`
       }
     >
