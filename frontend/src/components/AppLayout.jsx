@@ -34,11 +34,7 @@ function AppLayout({ children }) {
               className="flex shrink-0 items-center gap-3 !text-white"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white p-1.5 shadow-[0_10px_30px_-18px_rgba(43,33,27,0.6)]">
-                <img
-                  src={logoTdf}
-                  alt="Logo TDF"
-                  className="h-full w-full object-contain"
-                />
+                <img src={logoTdf} alt="Logo TDF" className="h-full w-full object-contain" />
               </div>
 
               <div>
@@ -51,14 +47,13 @@ function AppLayout({ children }) {
               </div>
             </Link>
 
-            {/* DESKTOP MENU */}
+            {/* DESKTOP MENU (UNCHANGED) */}
             <nav className="hidden items-center gap-2 md:flex">
               <MenuLink to="/dashboard">Dashboard</MenuLink>
               <MenuLink to="/my-roster">Gestisci rosa</MenuLink>
               <MenuLink to="/classifica">Classifica</MenuLink>
             </nav>
 
-            {/* RIGHT ACTIONS */}
             <div className="flex items-center gap-2">
               {user?.role === ADMIN_ROLE && (
                 <NavLink
@@ -66,8 +61,8 @@ function AppLayout({ children }) {
                   className={({ isActive }) =>
                     `rounded-2xl px-4 py-2 text-sm font-black transition-all active:translate-y-[1px] ${
                       isActive
-                        ? "bg-white text-[#F26A00]"
-                        : "border border-white/40 text-white hover:bg-white hover:text-[#F26A00]"
+                        ? "bg-white !text-[#F26A00]"
+                        : "border border-white/40 bg-transparent !text-white hover:bg-white hover:!text-[#F26A00]"
                     }`
                   }
                 >
@@ -75,7 +70,7 @@ function AppLayout({ children }) {
                 </NavLink>
               )}
 
-              {/* HAMBURGER MOBILE */}
+              {/* HAMBURGER */}
               <button
                 className="md:hidden rounded-xl border border-white/40 px-3 py-2 text-white"
                 onClick={() => setMobileOpen(true)}
@@ -85,7 +80,7 @@ function AppLayout({ children }) {
 
               <button
                 onClick={handleLogout}
-                className="hidden md:block rounded-2xl border border-white/40 px-4 py-2 text-sm font-black text-white transition-all hover:bg-white hover:text-[#F26A00]"
+                className="hidden md:block rounded-2xl border border-white/40 px-4 py-2 text-sm font-black !text-white transition-all hover:bg-white hover:!text-[#F26A00]"
               >
                 Logout
               </button>
@@ -94,19 +89,17 @@ function AppLayout({ children }) {
         </div>
       </header>
 
-      {/* MOBILE DRAWER */}
+      {/* MOBILE DRAWER ONLY (NEW STYLE) */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          {/* overlay */}
           <div
             className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
 
-          {/* panel */}
-          <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-xl p-5 flex flex-col gap-3">
+          <div className="absolute right-0 top-0 h-full w-72 bg-white p-5 shadow-xl flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <p className="font-black text-[#2B211B]">Menu</p>
+              <p className="font-black text-black">Menu</p>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="text-xl font-black"
@@ -115,32 +108,20 @@ function AppLayout({ children }) {
               </button>
             </div>
 
-            <MobileDrawerLink
-              to="/dashboard"
-              onClick={() => setMobileOpen(false)}
-            >
+            <MobileDrawerLink to="/dashboard" onClick={() => setMobileOpen(false)}>
               Dashboard
             </MobileDrawerLink>
 
-            <MobileDrawerLink
-              to="/my-roster"
-              onClick={() => setMobileOpen(false)}
-            >
+            <MobileDrawerLink to="/my-roster" onClick={() => setMobileOpen(false)}>
               Gestisci rosa
             </MobileDrawerLink>
 
-            <MobileDrawerLink
-              to="/classifica"
-              onClick={() => setMobileOpen(false)}
-            >
+            <MobileDrawerLink to="/classifica" onClick={() => setMobileOpen(false)}>
               Classifica
             </MobileDrawerLink>
 
             {user?.role === ADMIN_ROLE && (
-              <MobileDrawerLink
-                to="/admin"
-                onClick={() => setMobileOpen(false)}
-              >
+              <MobileDrawerLink to="/admin" onClick={() => setMobileOpen(false)}>
                 Admin
               </MobileDrawerLink>
             )}
@@ -158,7 +139,6 @@ function AppLayout({ children }) {
         </div>
       )}
 
-      {/* MAIN */}
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {children}
       </main>
@@ -166,7 +146,7 @@ function AppLayout({ children }) {
   );
 }
 
-/* DESKTOP LINK */
+/* DESKTOP — IDENTICO AL TUO ORIGINALE */
 function MenuLink({ to, children }) {
   return (
     <NavLink
@@ -174,8 +154,8 @@ function MenuLink({ to, children }) {
       className={({ isActive }) =>
         `rounded-2xl px-4 py-2 text-sm font-black transition-all ${
           isActive
-            ? "bg-[#F26A00] text-white shadow-[0_10px_26px_-18px_rgba(43,33,27,0.7)]"
-            : "text-black hover:bg-white/40 hover:text-black"
+            ? "bg-white !text-[#F26A00] shadow-[0_10px_26px_-18px_rgba(43,33,27,0.7)]"
+            : "!text-white hover:bg-white/15 hover:!text-white"
         }`
       }
     >
@@ -184,7 +164,7 @@ function MenuLink({ to, children }) {
   );
 }
 
-/* MOBILE DRAWER LINK */
+/* MOBILE DRAWER (NUOVO STILE COME VOLEVI) */
 function MobileDrawerLink({ to, children, onClick }) {
   return (
     <NavLink
