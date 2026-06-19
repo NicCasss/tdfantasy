@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import api from "../api/axiosClient";
 import { useAuth } from "../context/AuthContext";
@@ -9,6 +9,7 @@ const ADMIN_ROLE = "admCorradoadm";
 function AppLayout({ children }) {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleLogout() {
     try {
@@ -26,6 +27,7 @@ function AppLayout({ children }) {
       <header className="sticky top-0 z-30 bg-[#F26A00] shadow-[0_18px_40px_-28px_rgba(242,106,0,0.85)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex min-h-[72px] items-center justify-between gap-4">
+            {/* LOGO */}
             <Link
               to="/dashboard"
               className="flex shrink-0 items-center gap-3 !text-white"
@@ -42,19 +44,20 @@ function AppLayout({ children }) {
                 <div className="text-2xl font-black leading-none tracking-tight !text-white">
                   TDFantasy
                 </div>
-
                 <div className="mt-1 hidden text-[11px] font-black uppercase tracking-[0.18em] !text-white/70 sm:block">
                   Memorial
                 </div>
               </div>
             </Link>
 
+            {/* DESKTOP MENU */}
             <nav className="hidden items-center gap-2 md:flex">
               <MenuLink to="/dashboard">Dashboard</MenuLink>
               <MenuLink to="/my-roster">Gestisci rosa</MenuLink>
               <MenuLink to="/classifica">Classifica</MenuLink>
             </nav>
 
+            {/* RIGHT ACTIONS */}
             <div className="flex items-center gap-2">
               {user?.role === ADMIN_ROLE && (
                 <NavLink
@@ -71,23 +74,85 @@ function AppLayout({ children }) {
                 </NavLink>
               )}
 
+              {/* HAMBURGER MOBILE */}
+              <button
+                className="md:hidden rounded-xl border border-white/40 px-3 py-2 text-white"
+                onClick={() => setMobileOpen(true)}
+              >
+                ☰
+              </button>
+
               <button
                 onClick={handleLogout}
-                className="rounded-2xl border border-white/40 px-4 py-2 text-sm font-black !text-white transition-all hover:bg-white hover:!text-[#F26A00] active:translate-y-[1px]"
+                className="hidden md:block rounded-2xl border border-white/40 px-4 py-2 text-sm font-black !text-white transition-all hover:bg-white hover:!text-[#F26A00] active:translate-y-[1px]"
               >
                 Logout
               </button>
             </div>
           </div>
-
-          <nav className="flex gap-2 overflow-x-auto border-t border-white/15 py-3 md:hidden">
-            <MobileMenuLink to="/dashboard">Dashboard</MobileMenuLink>
-            <MobileMenuLink to="/my-roster">Gestisci rosa</MobileMenuLink>
-            <MobileMenuLink to="/classifica">Classifica</MobileMenuLink>
-          </nav>
         </div>
+
+        {/* DESKTOP SECOND NAV (OPTIONAL MOBILE HIDDEN) */}
+        <nav className="hidden md:flex gap-2 overflow-x-auto border-t border-white/15 py-3">
+          <MobileMenuLink to="/dashboard">Dashboard</MobileMenuLink>
+          <MobileMenuLink to="/my-roster">Gestisci rosa</MobileMenuLink>
+          <MobileMenuLink to="/classifica">Classifica</MobileMenuLink>
+        </nav>
       </header>
 
+      {/* MOBILE DRAWER */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* overlay */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setMobileOpen(false)}
+          />
+
+          {/* panel */}
+          <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-xl p-5 flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <p className="font-black text-[#2B211B]">Menu</p>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="text-xl font-black"
+              >
+                ✕
+              </button>
+            </div>
+
+            <MobileDrawerLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+              Dashboard
+            </MobileDrawerLink>
+
+            <MobileDrawerLink to="/my-roster" onClick={() => setMobileOpen(false)}>
+              Gestisci rosa
+            </MobileDrawerLink>
+
+            <MobileDrawerLink to="/classifica" onClick={() => setMobileOpen(false)}>
+              Classifica
+            </MobileDrawerLink>
+
+            {user?.role === ADMIN_ROLE && (
+              <MobileDrawerLink to="/admin" onClick={() => setMobileOpen(false)}>
+                Admin
+              </MobileDrawerLink>
+            )}
+
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                handleLogout();
+              }}
+              className="mt-auto rounded-xl bg-[#F26A00] py-2 font-black text-white"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MAIN */}
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {children}
       </main>
@@ -95,6 +160,7 @@ function AppLayout({ children }) {
   );
 }
 
+/* DESKTOP NAV LINK */
 function MenuLink({ to, children }) {
   return (
     <NavLink
@@ -112,6 +178,7 @@ function MenuLink({ to, children }) {
   );
 }
 
+/* MOBILE INLINE (se ti serve ancora) */
 function MobileMenuLink({ to, children }) {
   return (
     <NavLink
@@ -121,6 +188,25 @@ function MobileMenuLink({ to, children }) {
           isActive
             ? "bg-white !text-[#F26A00]"
             : "bg-white/10 !text-white hover:bg-white/15 hover:!text-white"
+        }`
+      }
+    >
+      {children}
+    </NavLink>
+  );
+}
+
+/* MOBILE DRAWER LINK */
+function MobileDrawerLink({ to, children, onClick }) {
+  return (
+    <NavLink
+      to={to}
+      onClick={onClick}
+      className={({ isActive }) =>
+        `rounded-xl px-4 py-3 font-black transition ${
+          isActive
+            ? "bg-[#F26A00] text-white"
+            : "bg-[#FFF7F0] text-[#2B211B] hover:bg-[#F26A00]/10"
         }`
       }
     >
